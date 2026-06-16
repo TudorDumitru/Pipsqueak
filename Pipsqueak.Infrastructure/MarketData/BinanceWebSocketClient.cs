@@ -1,20 +1,21 @@
 using System.Net.WebSockets;
 using System.Text;
 using Microsoft.Extensions.Logging;
+using Pipsqueak.Infrastructure.Interfaces;
 
 namespace Pipsqueak.Infrastructure.MarketData;
 
-public class BinanceWebSocketClient
+public class BinanceWebSocketClient : IBinanceWebSocketClient
 {
     private readonly ClientWebSocket _socket = new();
-    private readonly ILogger _logger;
+    private readonly ILogger<BinanceWebSocketClient> _logger;
 
-    public BinanceWebSocketClient(ILogger logger)
+    public BinanceWebSocketClient(ILogger<BinanceWebSocketClient> logger)
     {
         _logger = logger;
     }
 
-    public async Task ConnectAsync(string url, CancellationToken ct)
+    public async Task ConnectToWebSocketAsync(string url, CancellationToken ct)
     {
         _logger.LogInformation("Connecting to {Url}", url);
 
@@ -47,10 +48,7 @@ public class BinanceWebSocketClient
     {
         if (_socket.State == WebSocketState.Open)
         {
-            await _socket.CloseAsync(
-                WebSocketCloseStatus.NormalClosure,
-                "Closing",
-                CancellationToken.None);
+            await _socket.CloseAsync(WebSocketCloseStatus.NormalClosure, "Closing", CancellationToken.None);
         }
 
         _socket.Dispose();
