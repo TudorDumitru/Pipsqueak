@@ -12,4 +12,8 @@
       </Reference>
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\Pipsqueak.Domain\Pipsqueak.Domain.csproj" />
+    </ItemGroup>
+
 </Project>

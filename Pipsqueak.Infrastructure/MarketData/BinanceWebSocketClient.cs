@@ -1,6 +1,7 @@
 using System.Net.WebSockets;
 using System.Text;
 using Microsoft.Extensions.Logging;
+using Pipsqueak.Domain.Models;
 using Pipsqueak.Infrastructure.Interfaces;
 
 namespace Pipsqueak.Infrastructure.MarketData;
@@ -37,9 +38,10 @@ public class BinanceWebSocketClient : IBinanceWebSocketClient
                 _logger.LogWarning("WebSocket closed by server");
                 break;
             }
-
+            
+            
             string message = Encoding.UTF8.GetString(buffer, 0, result.Count);
-
+            Trade trade = new Trade(message);
             await onMessage(message);
         }
     }
