@@ -31,7 +31,7 @@ public class MarketDataFeeder<T> : BackgroundService
         }
         catch (Exception e)
         {
-            _logger.LogError("Error listening to trades: {error}", e);
+            _logger.LogError(e, "Error listening to trades:");
         }
         finally
         {
