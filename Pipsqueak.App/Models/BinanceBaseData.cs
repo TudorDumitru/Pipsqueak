@@ -1,6 +1,6 @@
 using Newtonsoft.Json;
 
-namespace Pipsqueak.App;
+namespace Pipsqueak.App.Models;
 
 public class BinanceBaseData
 {

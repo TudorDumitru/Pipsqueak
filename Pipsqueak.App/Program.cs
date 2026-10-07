@@ -2,7 +2,6 @@
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Pipsqueak.App.MarketData;
-using Pipsqueak.App.MarketDataWorker;
 using Pipsqueak.App.Models;
 using Serilog;
 

@@ -1,8 +1,8 @@
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using Pipsqueak.App.MarketData;
+using Pipsqueak.App.Models;
 
-namespace Pipsqueak.App.MarketDataWorker;
+namespace Pipsqueak.App.MarketData;
 
 public class MarketDataFeeder<T> : BackgroundService
     where T : BinanceBaseData
