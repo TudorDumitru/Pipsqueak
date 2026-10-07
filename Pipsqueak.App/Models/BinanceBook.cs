@@ -2,8 +2,12 @@ using Newtonsoft.Json;
 
 namespace Pipsqueak.App.Models;
 
-public class BinanceBook : BinanceBaseData
+public class BinanceBook
 {
+    
+    [JsonProperty("s")]
+    public string Symbol { get; set; } = string.Empty;
+    
     [JsonProperty("a")]
     public decimal Ask { get; set; }
     

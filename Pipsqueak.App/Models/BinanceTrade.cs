@@ -2,7 +2,7 @@ using Newtonsoft.Json;
 
 namespace Pipsqueak.App.Models;
 
-public class BinanceTrade : BinanceBaseData
+public class BinanceTrade
 {
     [JsonProperty("e")]
     public string EventType { get; set; } = string.Empty;
@@ -12,6 +12,9 @@ public class BinanceTrade : BinanceBaseData
 
     [JsonProperty("t")]
     public long TradeId { get; set; }
+    
+    [JsonProperty("s")]
+    public string Symbol { get; set; } = string.Empty;
 
     [JsonProperty("p")]
     public decimal Price { get; set; }

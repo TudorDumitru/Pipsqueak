@@ -5,7 +5,6 @@ using Pipsqueak.App.Models;
 namespace Pipsqueak.App.MarketData;
 
 public class MarketDataFeeder<T> : BackgroundService
-    where T : BinanceBaseData
 {
     private readonly string _url;
     private readonly ILogger<MarketDataFeeder<T>> _logger;
