@@ -1,8 +1,9 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
+using Pipsqueak.App.MarketData;
 using Pipsqueak.App.MarketDataWorker;
-using Pipsqueak.Infrastructure.Interfaces;
-using Pipsqueak.Infrastructure.MarketData;
+using Pipsqueak.App.Models;
 using Serilog;
 
 namespace Pipsqueak.App;
@@ -37,7 +38,8 @@ public static class Program
         {
             config.ReadFrom.Configuration(_builder.Configuration);
         });
-        _builder.Services.AddSingleton<IBinanceWebSocketClient, BinanceWebSocketClient>();
-        _builder.Services.AddHostedService<MarketDataBackgroundWorker>();
+        _builder.Services.AddTransient<IMarketDataConnector, MarketDataConnector>();
+        _builder.Services.AddHostedService<MarketDataFeeder<BinanceTrade>>(provider => new MarketDataFeeder<BinanceTrade>(provider.GetRequiredService<ILogger<MarketDataFeeder<BinanceTrade>>>(), provider.GetRequiredService<IMarketDataConnector>(), "wss://stream.binance.com:9443/ws/btcusdt@trade"));
+        _builder.Services.AddHostedService<MarketDataFeeder<BinanceBook>>(provider => new MarketDataFeeder<BinanceBook>(provider.GetRequiredService<ILogger<MarketDataFeeder<BinanceBook>>>(), provider.GetRequiredService<IMarketDataConnector>(), "wss://stream.binance.com:9443/ws/btcusdt@bookTicker"));
     }
 }
