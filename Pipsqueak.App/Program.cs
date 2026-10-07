@@ -40,19 +40,15 @@ public static class Program
 
         string bookUrl = _builder.Configuration["MarketData:BookUrl"]
                          ?? throw new InvalidOperationException("MarketData:BookUrl is missing.");
-
+        
         _builder.Services.AddTransient<IMarketDataConnector, MarketDataConnector>();
 
-        _builder.Services.AddHostedService<MarketDataFeeder<BinanceTrade>>(provider =>
-            new MarketDataFeeder<BinanceTrade>(
-                provider.GetRequiredService<ILogger<MarketDataFeeder<BinanceTrade>>>(),
-                provider.GetRequiredService<IMarketDataConnector>(),
-                tradeUrl));
+        _builder.Services.AddHostedService<MarketDataFeeder<BinanceTrade>>(
+            provider => ActivatorUtilities.CreateInstance<MarketDataFeeder<BinanceTrade>>(
+                provider, tradeUrl));
 
-        _builder.Services.AddHostedService<MarketDataFeeder<BinanceBook>>(provider =>
-            new MarketDataFeeder<BinanceBook>(
-                provider.GetRequiredService<ILogger<MarketDataFeeder<BinanceBook>>>(),
-                provider.GetRequiredService<IMarketDataConnector>(),
-                bookUrl));
+        _builder.Services.AddHostedService<MarketDataFeeder<BinanceBook>>(
+            provider => ActivatorUtilities.CreateInstance<MarketDataFeeder<BinanceBook>>(
+                provider, bookUrl));
     }
 }
