@@ -38,8 +38,24 @@ public static class Program
         {
             config.ReadFrom.Configuration(_builder.Configuration);
         });
+        string tradeUrl = _builder.Configuration["MarketData:TradeUrl"]
+                          ?? throw new InvalidOperationException("MarketData:TradeUrl is missing.");
+
+        string bookUrl = _builder.Configuration["MarketData:BookUrl"]
+                         ?? throw new InvalidOperationException("MarketData:BookUrl is missing.");
+
         _builder.Services.AddTransient<IMarketDataConnector, MarketDataConnector>();
-        _builder.Services.AddHostedService<MarketDataFeeder<BinanceTrade>>(provider => new MarketDataFeeder<BinanceTrade>(provider.GetRequiredService<ILogger<MarketDataFeeder<BinanceTrade>>>(), provider.GetRequiredService<IMarketDataConnector>(), "wss://stream.binance.com:9443/ws/btcusdt@trade"));
-        _builder.Services.AddHostedService<MarketDataFeeder<BinanceBook>>(provider => new MarketDataFeeder<BinanceBook>(provider.GetRequiredService<ILogger<MarketDataFeeder<BinanceBook>>>(), provider.GetRequiredService<IMarketDataConnector>(), "wss://stream.binance.com:9443/ws/btcusdt@bookTicker"));
+
+        _builder.Services.AddHostedService<MarketDataFeeder<BinanceTrade>>(provider =>
+            new MarketDataFeeder<BinanceTrade>(
+                provider.GetRequiredService<ILogger<MarketDataFeeder<BinanceTrade>>>(),
+                provider.GetRequiredService<IMarketDataConnector>(),
+                tradeUrl));
+
+        _builder.Services.AddHostedService<MarketDataFeeder<BinanceBook>>(provider =>
+            new MarketDataFeeder<BinanceBook>(
+                provider.GetRequiredService<ILogger<MarketDataFeeder<BinanceBook>>>(),
+                provider.GetRequiredService<IMarketDataConnector>(),
+                bookUrl));
     }
 }

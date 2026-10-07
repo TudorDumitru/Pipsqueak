@@ -27,4 +27,9 @@ public class BinanceTrade : BinanceBaseData
 
     [JsonProperty("M")]
     public bool Ignore { get; set; }
+
+    public override string ToString()
+    {
+        return $"BinanceTrade: Price={Price}, Quantity={Quantity}";
+    }
 }
